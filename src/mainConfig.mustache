@@ -1,0 +1,30 @@
+options {
+	directory "/var/bind";
+
+	recursion yes;
+
+	allow-recursion {
+		any;
+	};
+
+	allow-query {
+		any;
+	};
+
+	forwarders {
+		192.168.0.2;
+		192.168.0.4;
+	};
+
+	listen-on { any; };
+	listen-on-v6 { none; };
+
+	pid-file "/var/run/named/named.pid";
+
+	allow-transfer { none; };
+};
+
+zone "test.com" {
+	type master;
+	file "/etc/bind/zones/db.test.com";
+};
