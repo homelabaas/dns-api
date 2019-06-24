@@ -11,8 +11,8 @@
     "url": "git+https://github.com/homelabaas/dns-api.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Geoff Rich <geoff.rich@gmail.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/homelabaas/dns-api/issues"
   },
