@@ -9,7 +9,7 @@ export const createDataModel = (dns1, dns2, zones) => {
 export const createZone = (name, records) => {
     return {
         name,
-        filename: `/etc/bind/zones/db.name`,
+        filename: `db.${name}`,
         records
     }
 }

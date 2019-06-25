@@ -17,8 +17,26 @@ router.get('/', function(req,res){
 
 app.use('/', router);
 
-app.listen(port, function () {
+app.listen(port, async () => {
     console.log('Listening on port ' + port.toString());
+
+    const testContent = {
+        dns1: '192.168.0.1',
+        dns2: '192.168.0.2',
+        zones: [
+            {
+                name: 'test.com',
+                filename: 'db.test.com',
+                records: [
+                    {
+                        fqdn: 'test.test.com',
+                        type: 'A',
+                        address: '192.168.0.1'
+                    }
+                ]
+            }
+        ]
+    }
 
     const bind = spawn('named', ['-c', '/etc/bind/named.conf', '-g', '-u', 'named']);
 
