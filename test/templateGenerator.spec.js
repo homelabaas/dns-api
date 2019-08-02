@@ -40,23 +40,25 @@ const testDataModel = {
     ]
 }
 
-describe('TemplateGenerator', function () {
+describe('TemplateGenerator', async function() {
 
-    describe('genenerate', function(){
+    describe('genenerate', async function(){
   
-      it('should generate valid main configuration', function(){
+      it('should generate valid main configuration', async function(){
           const generator = new TemplateGenerator();
+          await generator.initialiseTemplates();
           const fileContents = generator.generateMainConfig(testDataModel);
           expect(fileContents).to.be.not.empty;
       });
 
-      it('should generate valid zone configuration', function(){
+      it('should generate valid zone configuration', async function(){
         const generator = new TemplateGenerator();
+        await generator.initialiseTemplates();
         const fileContents = generator.generateZoneConfig(testDataModel, 0);
         expect(fileContents).to.be.not.empty;
       });
 
-      it('should write out valid files to disk', function(){
+      it('should write out valid files to disk', async function(){
           const tempMainFile = path.join(__dirname, '..', 'temp', 'named.conf');
           const zoneFilePath = path.join(__dirname, '..', 'temp');
           console.log('Zone path: ' + zoneFilePath)
@@ -64,7 +66,8 @@ describe('TemplateGenerator', function () {
             fs.mkdirSync(zoneFilePath);
           }
           const generator = new TemplateGenerator();
-          generator.generateConfigs(testDataModel, tempMainFile, zoneFilePath);
+          await generator.initialiseTemplates();
+          await generator.generateConfigs(testDataModel, tempMainFile, zoneFilePath);
       });
 
     });

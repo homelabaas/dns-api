@@ -1,31 +1,39 @@
 const mustache = require('mustache');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 
-const mainConfigTemplateFilename = path.join(__dirname,'mainConfig.mustache')
-const zoneConfigTemplateFilename = path.join(__dirname,'zoneConfig.mustache')
-const mainConfigTemplate = fs.readFileSync(mainConfigTemplateFilename).toString();
-const zoneConfigTemplate = fs.readFileSync(zoneConfigTemplateFilename).toString();
-mustache.parse(zoneConfigTemplate);
-mustache.parse(mainConfigTemplate);
-
 class TemplateGenerator {
+
+    constructor() {
+      this.mainConfigTemplate = null;
+      this.zoneConfigTemplate = null;
+    }
+
+    async initialiseTemplates() {
+      const mainConfigTemplateFilename = path.join(__dirname,'mainConfig.mustache')
+      const zoneConfigTemplateFilename = path.join(__dirname,'zoneConfig.mustache')
+      this.mainConfigTemplate = (await fs.readFile(mainConfigTemplateFilename)).toString();
+      this.zoneConfigTemplate = (await fs.readFile(zoneConfigTemplateFilename)).toString();
+      mustache.parse(this.zoneConfigTemplate);
+      mustache.parse(this.mainConfigTemplate);
+    }
+
     // const mainConfigFilename = '/etc/bind/named.conf';
-    generateConfigs(dataModel, mainConfigFilename, zonePath) {
-        fs.writeFileSync(mainConfigFilename, this.generateMainConfig(dataModel));
+     async generateConfigs(dataModel, mainConfigFilename, zonePath) {
+        await fs.writeFile(mainConfigFilename, this.generateMainConfig(dataModel));
         for (let i = 0; i < dataModel.zones.length; i++) {
             const zone = dataModel.zones[i];
             const zoneFilePath = path.join(zonePath, zone.filename); // '/etc/bind/zones/'
-            fs.writeFileSync(zoneFilePath, this.generateZoneConfig(dataModel, i));
+            await fs.writeFile(zoneFilePath, this.generateZoneConfig(dataModel, i));
         }
     };
 
     generateMainConfig(dataModel) {
-        return mustache.render(mainConfigTemplate, dataModel);
+        return mustache.render(this.mainConfigTemplate, dataModel);
     }
 
     generateZoneConfig(dataModel, zoneIndex) {
-        return mustache.render(zoneConfigTemplate, dataModel.zones[zoneIndex]);
+        return mustache.render(this.zoneConfigTemplate, dataModel.zones[zoneIndex]);
     }
 }
 
