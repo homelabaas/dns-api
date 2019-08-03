@@ -24,7 +24,9 @@ options {
 	allow-transfer { none; };
 };
 
-zone "test.com" {
+{{#zones}}
+zone "{{name}}" {
 	type master;
-	file "/etc/bind/zones/db.test.com";
-};
+	file "/etc/bin/zones/{{filename}}";
+}
+{{/zones}}

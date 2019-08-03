@@ -18,6 +18,8 @@ const testDataModel = {
         {
             name: 'test.com',
             filename: 'db.test.com',
+            TTL: 604800,
+            serial: 1,
             records: [
                 {
                     fqdn: 'test.test.com',
@@ -29,6 +31,8 @@ const testDataModel = {
         {
             name: 'test2.com',
             filename: 'db.test2.com',
+            TTL: 604800,
+            serial: 1,
             records: [
                 {
                     fqdn: 'test.test2.com',
