@@ -1,5 +1,7 @@
 const express = require('express');
 const { spawn } = require('child_process');
+const TemplateGenerator = require('./templateGenerator');
+const fs = require('fs').promises;
 
 const app = express();
 const router = express.Router();
@@ -37,6 +39,13 @@ app.listen(port, async () => {
             }
         ]
     }
+    const tempMainFile = '/etc/bind/named.conf';
+    const zoneFilePath = '/etc/bind/zones';
+    await fs.mkdir(zoneFilePath);
+    
+    const generator = new TemplateGenerator();
+    await generator.initialiseTemplates();
+    await generator.generateConfigs(testContent, tempMainFile, zoneFilePath);
 
     const bind = spawn('named', ['-c', '/etc/bind/named.conf', '-g', '-u', 'named']);
 
