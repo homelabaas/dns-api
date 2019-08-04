@@ -10,7 +10,7 @@ module.exports.getConfig = function getConfig (req, res, next) {
     const returnValue = service.getConfig();
     utils.writeJson(res, returnValue);
   } catch (error) {
-    console.error('Error');
-    utils.writeJson(res, { "message": error.message });
+    console.error('Error', error);
+    utils.writeJson(res, { "error": error.message });
   }
 }
