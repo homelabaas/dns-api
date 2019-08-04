@@ -1,0 +1,177 @@
+swagger: "2.0"
+info:
+  description: "Allows DNS management"
+  version: "1.0.0"
+  title: "DNS Api"
+  contact:
+    email: "geoff.rich@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "dnsapi.localhost"
+basePath: "/v1"
+schemes:
+- "https"
+- "http"
+paths:
+  /config:
+    get:
+      summary: "Get current configuration"
+      operationId: "getConfig"
+      responses:
+        "200":
+          description: "DNS server configuration"
+          schema:
+            $ref: "#/definitions/Configuration"
+      x-swagger-router-controller: "Configuration"
+    put:
+      summary: "Modify current configuration"
+      operationId: "setConfig"
+      parameters:
+        - name: body
+          in: body
+          description: "Configuration settings to change"
+          required: true
+          schema:
+            $ref: "#/definitions/Configuration"
+      responses:
+        "200":
+          description: "DNS server main configuration"
+          schema:
+            $ref: "#/definitions/Configuration"
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Configuration"
+  /zones:
+    get:
+      summary: "Get all dns zones"
+      operationId: "getZones"
+      responses:
+        "200":
+          description: "A list of all DNS zones"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Zone"
+      x-swagger-router-controller: "Zones"
+    post:
+      summary: "Add a single zone"
+      operationId: "addZone"
+      parameters:
+        - name: body
+          in: body
+          description: "Record to add"
+          required: true
+          schema:
+            $ref: "#/definitions/Zone"
+      responses:
+        "200":
+          description: A single zone
+          schema:
+            $ref: "#/definitions/Zone"
+      x-swagger-router-controller: "Zones"
+  /zones/{id}:
+    get:
+      summary: "Return a single zone"
+      operationId: "getZoneById"
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the zone to fetch"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "A single zone"
+          schema:
+            $ref: "#/definitions/Zone"
+        "404":
+          description: "Zone not found"
+      x-swagger-router-controller: "Zones"
+  /zones/{id}/records:
+    get:
+      summary: "Returns the DNS records for a single zone"
+      operationId: "getRecordsByZoneId"
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the zone to add the record to"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "A list of records for a single zone"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Record"
+      x-swagger-router-controller: "Records"
+    post:
+      summary: "Add a new record to a zone"
+      operationId: "addRecordForZoneId"
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the zone to get the records from"
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: "Record to add"
+          required: true
+          schema:
+            $ref: "#/definitions/Record"
+      responses:
+        "200":
+          description: "Successfully added record"
+      x-swagger-router-controller: "Records"
+definitions:
+  Configuration:
+    type: "object"
+    properties:
+      dns1:
+        type: "string"
+        description: "DNS Forwarder 1"
+      dns2:
+        type: "string"
+        description: "DNS Forwarder 2"
+    example:
+      dns1: "192.168.0.1"
+      dns2: "192.168.0.2"
+  Zone:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      ttl:
+        type: "integer"
+        description: "Time in seconds"
+    example:
+      name: "test.localhost"
+      ttl: 3600
+  Record:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      recordtype:
+        type: "string"
+      address:
+        type: "string"
+    example:
+      name: "test.test.localhost"
+      type: "A"
+      address: "127.0.0.1"
+  Error:
+    type: "object"
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

@@ -1,5 +1,15 @@
 $TTL	{{TTL}}
 
+@   IN  SOA     {{primarymaster}} {{adminEmail}} (
+        2018110201  ;Serial
+        3600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        86400       ;Minimum TTL
+)
+
+@   IN  NS  {{primarymaster}}
+
 {{#records}}
 {{fqdn}}	IN	{{type}}	{{address}}
 {{/records}}

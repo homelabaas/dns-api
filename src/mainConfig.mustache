@@ -12,8 +12,8 @@ options {
 	};
 
 	forwarders {
-		192.168.0.2;
-		192.168.0.4;
+		{{dns1}};
+		{{dns2}};
 	};
 
 	listen-on { any; };
@@ -27,6 +27,6 @@ options {
 {{#zones}}
 zone "{{name}}" {
 	type master;
-	file "/etc/bin/zones/{{filename}}";
-}
+	file "/etc/bind/zones/{{filename}}";
+};
 {{/zones}}
