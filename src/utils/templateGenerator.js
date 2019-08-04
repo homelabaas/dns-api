@@ -11,8 +11,8 @@ class TemplateGenerator {
     }
 
     async initialiseTemplates() {
-      const mainConfigTemplateFilename = path.join(__dirname, '..', config.get('Templates.Main'));
-      const zoneConfigTemplateFilename = path.join(__dirname, '..', config.get('Templates.Zone'));
+      const mainConfigTemplateFilename = path.join(__dirname, '..', 'templates', config.get('Templates.Main'));
+      const zoneConfigTemplateFilename = path.join(__dirname, '..', 'templates', config.get('Templates.Zone'));
       this.mainConfigTemplate = (await fs.readFile(mainConfigTemplateFilename)).toString();
       this.zoneConfigTemplate = (await fs.readFile(zoneConfigTemplateFilename)).toString();
       mustache.parse(this.zoneConfigTemplate);
