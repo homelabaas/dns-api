@@ -1,0 +1,10 @@
+{
+    "Paths": {
+        "MainConfigFile": "/etc/bind/named.conf",
+        "ZonePath": "/etc/bind/zones"
+    },
+    "Templates": {
+        "Main": "mainConfig.mustache",
+        "Zone": "zoneConfig.mustache"
+    }
+}

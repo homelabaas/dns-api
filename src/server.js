@@ -6,9 +6,8 @@ const jsyaml = require('js-yaml');
 const fspromise = require('fs').promises;
 const fs = require('fs');
 const path = require('path');
-const awilix = require('awilix');
+const config = require('config');
 
-const TemplateGenerator = require('./templateGenerator');
 const container = require('./diContainer').container;
 const port = process.env.port || 80;
 
@@ -22,9 +21,6 @@ var options = {
 
 const spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 const swaggerDoc = jsyaml.safeLoad(spec);
-
-const mainConfFile = '/etc/bind/named.conf';
-const zoneFilePath = '/etc/bind/zones';
 
 const testContent = {
   dns1: '192.168.0.1',
@@ -92,10 +88,10 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 });
 
 const generationConfigurationFiles = async () => {
-  await fspromise.mkdir(zoneFilePath);
-  const generator = new TemplateGenerator();
+  await fspromise.mkdir(config.get('Paths.ZonePath'));
+  const generator = container.resolve('templateGenerator');
   await generator.initialiseTemplates();
-  await generator.generateConfigs(testContent, mainConfFile, zoneFilePath);
+  await generator.generateConfigs(testContent, config.get('Paths.MainConfigFile'), config.get('Paths.ZonePath'));
 }
 
 const runBind = async () => {

@@ -1,6 +1,7 @@
 const mustache = require('mustache');
 const fs = require('fs').promises;
 const path = require('path');
+const config = require('config');
 
 class TemplateGenerator {
 
@@ -10,8 +11,8 @@ class TemplateGenerator {
     }
 
     async initialiseTemplates() {
-      const mainConfigTemplateFilename = path.join(__dirname,'mainConfig.mustache')
-      const zoneConfigTemplateFilename = path.join(__dirname,'zoneConfig.mustache')
+      const mainConfigTemplateFilename = path.join(__dirname, '..', config.get('Templates.Main'));
+      const zoneConfigTemplateFilename = path.join(__dirname, '..', config.get('Templates.Zone'));
       this.mainConfigTemplate = (await fs.readFile(mainConfigTemplateFilename)).toString();
       this.zoneConfigTemplate = (await fs.readFile(zoneConfigTemplateFilename)).toString();
       mustache.parse(this.zoneConfigTemplate);

@@ -1,6 +1,5 @@
 const assert = require('assert');
-const TemplateGenerator = require('../src/templateGenerator');
-
+const container = require('../src/diContainer').container;
 const expect = require('chai').expect;
 const should = require('chai').should();
 
@@ -63,14 +62,14 @@ describe('TemplateGenerator', async function() {
     describe('genenerate', async function(){
   
       it('should generate valid main configuration', async function(){
-          const generator = new TemplateGenerator();
+          const generator = container.resolve('templateGenerator');
           await generator.initialiseTemplates();
           const fileContents = generator.generateMainConfig(testDataModel);
           expect(fileContents).to.be.not.empty;
       });
 
       it('should generate valid zone configuration', async function(){
-        const generator = new TemplateGenerator();
+        const generator = container.resolve('templateGenerator');
         await generator.initialiseTemplates();
         const fileContents = generator.generateZoneConfig(testDataModel, 0);
         expect(fileContents).to.be.not.empty;
@@ -83,7 +82,7 @@ describe('TemplateGenerator', async function() {
           if (!fs.existsSync(zoneFilePath)) {
             fs.mkdirSync(zoneFilePath);
           }
-          const generator = new TemplateGenerator();
+          const generator = container.resolve('templateGenerator');
           await generator.initialiseTemplates();
           await generator.generateConfigs(testDataModel, tempMainFile, zoneFilePath);
       });
