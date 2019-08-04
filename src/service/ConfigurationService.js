@@ -1,7 +1,14 @@
-
 module.exports = class ConfigurationService {
-  
-  
-  // inject the repository here to save/load data
+  constructor(opts) {
+    this.repository = opts.dnsRepository;
+  }
 
+  getConfig() {
+    console.log('Get config');
+    this.repository.hello();
+
+    return {
+      "blah": "blahblah"
+    }
+  }
 }

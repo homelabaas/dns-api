@@ -6,18 +6,20 @@ const jsyaml = require('js-yaml');
 const fspromise = require('fs').promises;
 const fs = require('fs');
 const path = require('path');
-const TemplateGenerator = require('./templateGenerator');
+const awilix = require('awilix');
 
+const TemplateGenerator = require('./templateGenerator');
+const container = require('./diContainer').container;
 const port = process.env.port || 80;
 
 // swaggerRouter configuration
 var options = {
   swaggerUi: path.join(__dirname, '/swagger.json'),
   controllers: path.join(__dirname, './controllers'),
-  useStubs: false
+  useStubs: false,
+
 };
 
-// The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
 const spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 const swaggerDoc = jsyaml.safeLoad(spec);
 
