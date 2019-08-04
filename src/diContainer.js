@@ -14,4 +14,4 @@ container.register({
   templateGenerator: awilix.asClass(templateGenerator)
 });
 
-module.exports.container = container;
+module.exports = container;

@@ -1,5 +1,5 @@
 const utils = require('../utils/writer.js');
-const container = require('../diContainer').container;
+const container = require('../diContainer');
 
 module.exports.getConfig = function getConfig (req, res, next) {
 
