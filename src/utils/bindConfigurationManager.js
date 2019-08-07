@@ -1,5 +1,4 @@
 const fs = require('fs').promises;
-const testContent = require('./initialiseDnsData');
 const config = require('config');
 
 module.exports = class BindConfigurationManager{

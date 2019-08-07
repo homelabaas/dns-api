@@ -29,6 +29,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   app.use(middleware.swaggerUi());
 
   http.createServer(app).listen(port, async function () {
+    await container.resolve('dnsRepository').initialise();
     await container.resolve('bindConfigurationManager').reconfigureBind();
     await bindManager.runBind();
     console.log('Your server is listening on port %d (http://localhost:%d)', port, port);

@@ -5,10 +5,6 @@ module.exports = class ConfigurationService {
 
   getConfig() {
     console.log('Get config');
-    this.repository.hello();
-
-    return {
-      "blah": "blahblah"
-    }
+    return this.repository.getFullConfig();
   }
 }

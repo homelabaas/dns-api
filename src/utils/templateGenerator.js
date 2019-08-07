@@ -23,11 +23,13 @@ class TemplateGenerator {
      async generateConfigs(dataModel, mainConfigFilename, zonePath) {
         console.log('Writing main config file to ' + mainConfigFilename);
         await fs.writeFile(mainConfigFilename, this.generateMainConfig(dataModel));
-        for (let i = 0; i < dataModel.zones.length; i++) {
-            const zone = dataModel.zones[i];
-            const zoneFilePath = path.join(zonePath, zone.filename); // '/etc/bind/zones/'
-            console.log('Writing zone ' + zone.name + ' config file to ' + zoneFilePath);
-            await fs.writeFile(zoneFilePath, this.generateZoneConfig(dataModel, i));
+        if (dataModel.zones) {
+          for (let i = 0; i < dataModel.zones.length; i++) {
+              const zone = dataModel.zones[i];
+              const zoneFilePath = path.join(zonePath, zone.filename); // '/etc/bind/zones/'
+              console.log('Writing zone ' + zone.name + ' config file to ' + zoneFilePath);
+              await fs.writeFile(zoneFilePath, this.generateZoneConfig(dataModel, i));
+          }
         }
     };
 
