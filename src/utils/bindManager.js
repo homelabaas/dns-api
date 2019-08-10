@@ -13,10 +13,22 @@ exports.runBind = async () => {
   });
 
   bind.on('close', (code) => {
-      console.log(`child process exited with code ${code}`);
+      console.log(`bind child process exited with code ${code}`);
   });
 }
 
 exports.reloadBind = async () => {
-  
+  const reload = spawn('rdnc', ['reload']);
+
+  reload.stdout.on('data', (data) => {
+    console.log(`reload_stdout: ${data}`);
+  });
+
+  reload.stderr.on('data', (data) => {
+      console.log(`reload_stderr: ${data}`);
+  });
+
+  reload.on('close', (code) => {
+      console.log(`reload child process exited with code ${code}`);
+  });
 }

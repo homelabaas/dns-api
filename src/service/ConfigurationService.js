@@ -5,6 +5,11 @@ module.exports = class ConfigurationService {
 
   getConfig() {
     console.log('Get config');
-    return this.repository.getFullConfig();
+    return this.repository.getConfig();
+  }
+
+  async setConfig(config) {
+    console.log('Set config');
+    await this.repository.setConfig(config);
   }
 }

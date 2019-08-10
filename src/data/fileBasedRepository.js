@@ -29,9 +29,10 @@ module.exports = class FileBasedRepository {
     }
   }
 
-  setConfig(config) {
+  async setConfig(config) {
     this._data.dns1 = config.dns1;
     this._data.dns2 = config.dns2;
+    await this.save();
   }
 
   async addZone(zoneId, zoneToAdd) {
@@ -98,5 +99,12 @@ module.exports = class FileBasedRepository {
     console.log('Returning data');
     console.log(JSON.stringify(this._data));
     return this._data;
+  }
+
+  getConfig() {
+    return {
+      dns1: this._data.dns1,
+      dns2: this._data.dns2
+    }
   }
 }

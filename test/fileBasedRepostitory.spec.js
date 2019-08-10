@@ -14,6 +14,26 @@ const tempMainFile = path.join(__dirname, '..', 'temp', 'filerepository.json');
 
 describe('FileBasedRepository', async function() {
 
+  describe('set main config', async function(){
+  
+    it('should allow the dns forwarders to be set', async function(){
+      if (fs.existsSync(tempMainFile)) {
+        fs.unlinkSync(tempMainFile);
+      }
+      const config = require('config');
+      const repository = new FileBasedRepository({ fileRespositoryFilePath: tempMainFile });
+      await repository.initialise();
+      await repository.setConfig({
+        dns1: '10.0.0.0',
+        dns2: '10.0.0.1'
+      });
+      const allData = repository.getFullConfig();
+      expect(allData.dns1).to.equal('10.0.0.0');
+      expect(allData.dns2).to.equal('10.0.0.1');
+    });
+
+  });
+
     describe('save and load', async function(){
   
       it('should initialise properly then save', async function(){
