@@ -23,7 +23,6 @@ module.exports = class BindConfigurationManager{
     await this.templateGenerator.generateConfigs(this.dnsRepository.getFullConfig(), 
       config.get('Paths.MainConfigFile'), config.get('Paths.ZonePath'));
 
-    // Tell bind to reload
     if (this.bindIsRunning) {
       console.log('Reload bind configuration');
       bindManager.reloadBind();

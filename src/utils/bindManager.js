@@ -5,15 +5,37 @@ exports.runBind = () => {
   const bind = spawn('named', ['-c', '/etc/bind/named.conf', '-g', '-u', 'named']);
 
   bind.stdout.on('data', (data) => {
-      console.log(`bind_stdout: ${data}`);
+    console.log(`bind_stdout: ${data}`);
   });
 
   bind.stderr.on('data', (data) => {
-      console.log(`bind_stderr: ${data}`);
+    console.log(`bind_stderr: ${data}`);
   });
 
   bind.on('close', (code) => {
-      console.log(`bind child process exited with code ${code}`);
+    console.log(`bind child process exited with code ${code}`);
+  });
+}
+
+exports.getBindStatus = () => {
+  return new Promise((resolve,reject) => {
+    const rndcConfig = spawn('rndc', ['status']);
+
+    rndcConfig.stdout.on('data', (data) => {
+      console.log(`status_stdout: ${data}`);
+    });
+
+    rndcConfig.stderr.on('data', (data) => {
+        console.log(`status_stderr: ${data}`);
+    });
+
+    rndcConfig.on('close', (code) => {
+        resolve(`rndc status child process exited with code ${code}`);
+    });
+
+    rndcConfig.on('error', (error) => {
+      reject('Error running rndc status. Message: ' + error.message);
+    });
   });
 }
 
@@ -48,11 +70,11 @@ exports.ownConfig = () => {
     });
 
     rndcConfig.stderr.on('data', (data) => {
-        console.log(`rndc_stderr: ${data}`);
+      console.log(`rndc_stderr: ${data}`);
     });
 
     rndcConfig.on('close', (code) => {
-        resolve(`rndc config child process exited with code ${code}`);
+      resolve(`rndc config child process exited with code ${code}`);
     });
 
     rndcConfig.on('error', (error) => {
@@ -69,11 +91,11 @@ exports.reloadBind = () => {
   });
 
   reload.stderr.on('data', (data) => {
-      console.log(`reload_stderr: ${data}`);
+    console.log(`reload_stderr: ${data}`);
   });
 
   reload.on('close', (code) => {
-      console.log(`reload child process exited with code ${code}`);
+    console.log(`reload child process exited with code ${code}`);
   });
 
   reload.on('error', (error) => {
