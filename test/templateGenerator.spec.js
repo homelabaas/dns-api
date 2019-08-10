@@ -13,7 +13,8 @@ const fs = require('fs');
 const testDataModel = {
   dns1: '192.168.0.1',
   dns2: '192.168.0.2',
-  zones: [
+  zones: {
+    'test.com': 
       {
           name: 'test.com',
           filename: 'db.test.com',
@@ -34,6 +35,7 @@ const testDataModel = {
               }
           ]
       },
+    'test2.com':
       {
           name: 'test2.com',
           filename: 'db.test2.com',
@@ -54,7 +56,7 @@ const testDataModel = {
               }
           ]
       }
-  ]
+  }
 };
 
 describe('TemplateGenerator', async function() {
@@ -71,7 +73,8 @@ describe('TemplateGenerator', async function() {
       it('should generate valid zone configuration', async function(){
         const generator = container.resolve('templateGenerator');
         await generator.initialiseTemplates();
-        const fileContents = generator.generateZoneConfig(testDataModel, 0);
+        const zone = Object.values(testDataModel.zones)[0];
+        const fileContents = generator.generateZoneConfig(testDataModel, zone);
         expect(fileContents).to.be.not.empty;
       });
 

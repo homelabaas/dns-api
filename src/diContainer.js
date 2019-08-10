@@ -3,6 +3,7 @@ const fileBaseRepository = require('./data/fileBasedRepository');
 const configurationService = require('./service/ConfigurationService');
 const templateGenerator = require('./utils/templateGenerator');
 const bindConfigurationManager = require('./utils/bindConfigurationManager');
+const config = require('config');
 const Lifetime = awilix.Lifetime;
 
 const container = awilix.createContainer({
@@ -14,7 +15,8 @@ container.register({
   dnsRepository: awilix.asClass(fileBaseRepository, { lifetime: Lifetime.SINGLETON }),
   configurationService: awilix.asClass(configurationService),
   templateGenerator: awilix.asClass(templateGenerator, { lifetime: Lifetime.SINGLETON }),
-  bindConfigurationManager: awilix.asClass(bindConfigurationManager)
+  bindConfigurationManager: awilix.asClass(bindConfigurationManager),
+  fileRespositoryFilePath: awilix.asValue(config.get("Paths.DNSRepositoryFile"))
 });
 
 module.exports = container;

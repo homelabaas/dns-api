@@ -22,13 +22,18 @@ class TemplateGenerator {
     // const mainConfigFilename = '/etc/bind/named.conf';
      async generateConfigs(dataModel, mainConfigFilename, zonePath) {
         console.log('Writing main config file to ' + mainConfigFilename);
-        await fs.writeFile(mainConfigFilename, this.generateMainConfig(dataModel));
+        var copiedObject =  Object.assign({}, dataModel); 
+        if (copiedObject.zones) {
+          copiedObject.zones = Object.values(copiedObject.zones);
+        }
+        await fs.writeFile(mainConfigFilename, this.generateMainConfig(copiedObject));
         if (dataModel.zones) {
-          for (let i = 0; i < dataModel.zones.length; i++) {
-              const zone = dataModel.zones[i];
+          const zones = Object.values(dataModel.zones);
+          for (let i = 0; i < zones.length; i++) {
+              const zone = zones[i];
               const zoneFilePath = path.join(zonePath, zone.filename); // '/etc/bind/zones/'
               console.log('Writing zone ' + zone.name + ' config file to ' + zoneFilePath);
-              await fs.writeFile(zoneFilePath, this.generateZoneConfig(dataModel, i));
+              await fs.writeFile(zoneFilePath, this.generateZoneConfig(zone));
           }
         }
     };
@@ -37,8 +42,8 @@ class TemplateGenerator {
         return mustache.render(this.mainConfigTemplate, dataModel);
     }
 
-    generateZoneConfig(dataModel, zoneIndex) {
-        return mustache.render(this.zoneConfigTemplate, dataModel.zones[zoneIndex]);
+    generateZoneConfig(zone) {
+        return mustache.render(this.zoneConfigTemplate, zone);
     }
 }
 
