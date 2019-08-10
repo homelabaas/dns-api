@@ -13,9 +13,9 @@ const container = awilix.createContainer({
 // Dependency Injection Container - register implementations here
 container.register({
   dnsRepository: awilix.asClass(fileBaseRepository, { lifetime: Lifetime.SINGLETON }),
-  configurationService: awilix.asClass(configurationService),
+  configurationService: awilix.asClass(configurationService, { lifetime: Lifetime.SINGLETON }),
   templateGenerator: awilix.asClass(templateGenerator, { lifetime: Lifetime.SINGLETON }),
-  bindConfigurationManager: awilix.asClass(bindConfigurationManager),
+  bindConfigurationManager: awilix.asClass(bindConfigurationManager, { lifetime: Lifetime.SINGLETON }),
   fileRespositoryFilePath: awilix.asValue(config.get("Paths.DNSRepositoryFile"))
 });
 

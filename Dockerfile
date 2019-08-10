@@ -2,7 +2,7 @@ FROM node:10-alpine
 
 WORKDIR /app
 
-RUN apk --update add bind
+RUN apk --update --no-cache add bind bind-tools
 
 COPY package*.json ./
 

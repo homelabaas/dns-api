@@ -30,8 +30,9 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 
   http.createServer(app).listen(port, async function () {
     await container.resolve('dnsRepository').initialise();
+    await bindManager.configureRndc();
+    await bindManager.ownConfig();
     await container.resolve('bindConfigurationManager').reconfigureBind();
-    await bindManager.runBind();
     console.log('Your server is listening on port %d (http://localhost:%d)', port, port);
     console.log('Swagger-ui is available on http://localhost:%d/docs', port);
   });
