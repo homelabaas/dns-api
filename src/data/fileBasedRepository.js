@@ -101,6 +101,21 @@ module.exports = class FileBasedRepository {
     return this._data;
   }
 
+  getZone(zoneId) {
+    const returnZone = Object.assign({}, this._data.zones[zoneId]);
+    delete returnZone.records;
+    return returnZone;
+  }
+
+  getZoneRecords(zoneId) {
+    return this._data.zones[zoneId].records;
+  }
+
+  getZoneRecord(zoneId, fqdn) {
+    return this._data.zones[zoneId].records.find(p => p.fqdn === fqdn);
+  }
+
+
   getConfig() {
     return {
       dns1: this._data.dns1,
