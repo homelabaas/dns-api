@@ -1,3 +1,5 @@
+const Zone = require('../data/Zone');
+
 module.exports = class ConfigurationService {
   constructor(opts) {
     this.repository = opts.dnsRepository;
@@ -8,8 +10,21 @@ module.exports = class ConfigurationService {
     return this.repository.getZone(zoneId);
   }
 
-  async addZone(zoneId, zone) {
-    await this.repository.addZone(zoneId, zone);
+  getAllZones() {
+    return this.repository.getZones();
+  }
+
+  async addZone(zone) {
+    const addZone = new Zone(zone.name, zone.TTL, zone.adminEmail, zone.nsaddress);
+    await this.repository.addZone(zone.name, addZone);
     await this.bindConfigurationManager.reconfigureBind();
+    return { 'message': "Zone added OK."};
+  }
+
+  async setZone(zone) {
+    const setZone = new Zone(zone.name, zone.TTL, zone.adminEmail);
+    await this.repository.setZone(zone.name, setZone);
+    await this.bindConfigurationManager.reconfigureBind();
+    return { 'message': "Zone set OK."};
   }
 }

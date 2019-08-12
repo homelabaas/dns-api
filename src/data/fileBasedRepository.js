@@ -26,6 +26,7 @@ module.exports = class FileBasedRepository {
         dns2: '192.168.0.2',
         zones: {}
       };
+      await this.save();
     }
   }
 
@@ -43,6 +44,20 @@ module.exports = class FileBasedRepository {
       throw new Error("Zone " + zoneId + " already exist.");
     }
     this._data.zones[zoneId] = zoneToAdd;
+    await this.save();
+  }
+
+  async setZone(zoneId, zoneToSet) {
+    if (this._data.zones.hasOwnProperty(zoneId)) {
+      this._data.zones[zoneId].name = zoneToSet.name;
+      this._data.zones[zoneId].filename = zoneToSet.filename;
+      this._data.zones[zoneId].TTL = zoneToSet.TTL;
+      this._data.zones[zoneId].serial = zoneToSet.serial;
+      this._data.zones[zoneId].primarymaster = zoneToSet.primarymaster;
+      this._data.zones[zoneId].adminEmail = zoneToSet.adminEmail;
+    } else {
+      throw new Error("Zone " + zoneId + " does not exist.");
+    }
     await this.save();
   }
 
@@ -107,6 +122,20 @@ module.exports = class FileBasedRepository {
     return returnZone;
   }
 
+  getZones() {
+    const zoneArray = Object.values(this._data.zones);
+    const returnZone = zoneArray.map(p => {
+      return {
+        name: p.name,
+        filename: p.filename,
+        TTL: p.TTL,
+        serial: p.serial,
+        primarymaster: p.primarymaster,
+        adminEmail: p.adminEmail
+      }
+    });
+  }
+
   getZoneRecords(zoneId) {
     return this._data.zones[zoneId].records;
   }
@@ -114,7 +143,6 @@ module.exports = class FileBasedRepository {
   getZoneRecord(zoneId, fqdn) {
     return this._data.zones[zoneId].records.find(p => p.fqdn === fqdn);
   }
-
 
   getConfig() {
     return {

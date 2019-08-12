@@ -46,7 +46,7 @@ paths:
   /zones:
     get:
       summary: "Get all dns zones"
-      operationId: "getZones"
+      operationId: "getAllZones"
       responses:
         "200":
           description: "A list of all DNS zones"
@@ -64,12 +64,28 @@ paths:
           description: "Record to add"
           required: true
           schema:
+            $ref: "#/definitions/NewZone"
+      responses:
+        "200":
+          description: OK message
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+      x-swagger-router-controller: "Zones"
+    put:
+      summary: "Set a single zone"
+      operationId: "setZone"
+      parameters:
+        - name: body
+          in: body
+          description: "Record to set values to"
+          required: true
+          schema:
             $ref: "#/definitions/Zone"
       responses:
         "200":
-          description: A single zone
+          description: OK message
           schema:
-            $ref: "#/definitions/Zone"
+            $ref: "#/definitions/GeneralResponse"
       x-swagger-router-controller: "Zones"
   /zones/{id}:
     get:
@@ -144,12 +160,32 @@ definitions:
     properties:
       name:
         type: "string"
-      ttl:
+      TTL:
         type: "integer"
         description: "Time in seconds"
+      adminEmail:
+        type: "string"
     example:
       name: "test.localhost"
-      ttl: 3600
+      TTL: 3600
+      adminEmail: "admin.test.localhost"
+  NewZone:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      TTL:
+        type: "integer"
+        description: "Time in seconds"
+      adminEmail:
+        type: "string"
+      nsaddress:
+        type: "string"
+    example:
+      name: "test.localhost"
+      TTL: 3600
+      adminEmail: "admin.test.localhost"
+      nsaddress: '192.168.0.1'
   Record:
     type: "object"
     properties:
@@ -174,3 +210,12 @@ definitions:
         format: int32
       message:
         type: string
+  GeneralResponse:
+    type: "object"
+    required:
+      - message
+    properties:
+      message:
+        type: string    
+    example:
+      message: "Zone added OK"
