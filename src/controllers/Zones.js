@@ -1,7 +1,7 @@
 const utils = require('../utils/writer.js');
 const container = require('../diContainer');
 
-module.exports.getZone = function getZone (req, res, next) {
+module.exports.getZoneById = function getZoneById (req, res, next) {
   const service = container.resolve('zoneService');
   var zoneId = req.swagger.params['id'].value;
   try {

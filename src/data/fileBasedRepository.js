@@ -74,8 +74,14 @@ module.exports = class FileBasedRepository {
     if (!this._data.zones.hasOwnProperty(zoneId)) {
       throw new Error("Zone " + zoneName + " does not exist.");
     }
-    this._data.zones[zoneId].records.push(record);
-    await this.save();
+    const zone = this._data.zones[zoneId];
+    const records = zone.records.filter(p => p.fqdn === record.fqdn);
+    if (records.length === 0) {
+      this._data.zones[zoneId].records.push(record);
+      await this.save();
+    } else {
+      throw new Error("Record " + record.fqdn + " already exists.");
+    }
   }
 
   removeRecordByFqdn(zoneId, fqdn) {
@@ -117,14 +123,28 @@ module.exports = class FileBasedRepository {
   }
 
   getZone(zoneId) {
+    if (!this._data.zones.hasOwnProperty(zoneId)) {
+      throw new Error("Zone " + zoneId + " does not exist.");
+    }
     const returnZone = Object.assign({}, this._data.zones[zoneId]);
-    delete returnZone.records;
+    if (returnZone.records)
+      delete returnZone.records;
     return returnZone;
+  }
+
+  getRecords(zoneId) {
+    if (!this._data.zones.hasOwnProperty(zoneId)) {
+      throw new Error("Zone " + zoneId + " does not exist.");
+    }
+    if (this._data.zones[zoneId].records)
+      return this._data.zones[zoneId].records;
+    else
+      return [];
   }
 
   getZones() {
     const zoneArray = Object.values(this._data.zones);
-    const returnZone = zoneArray.map(p => {
+    return zoneArray.map(p => {
       return {
         name: p.name,
         filename: p.filename,
