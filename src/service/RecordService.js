@@ -9,7 +9,7 @@ module.exports = class RecordService {
     return this.repository.getRecords(zoneId);
   }
 
-  addRecordForZoneId(zoneId, record) {
+  async addRecordForZoneId(zoneId, record) {
     this.repository.addRecord(zoneId, record);
     await this.bindConfigurationManager.reconfigureBind();
     return { 'message': "Record added OK."};

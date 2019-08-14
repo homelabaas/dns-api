@@ -1,7 +1,7 @@
 const utils = require('../utils/writer.js');
 const container = require('../diContainer');
 
-module.exports.getConfig = function getConfig (req, res, next) {
+module.exports.getConfig = async function getConfig (req, res, next) {
   const service = container.resolve('configurationService');
   try {
     const returnValue = service.getConfig();
@@ -12,14 +12,14 @@ module.exports.getConfig = function getConfig (req, res, next) {
   }
 }
 
-module.exports.setConfig = function setConfig (req, res, next) {
+module.exports.setConfig = async function setConfig (req, res, next) {
   const service = container.resolve('configurationService');
   var body = req.swagger.params['body'].value;
-  service.setConfig(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+  try {
+    const returnValue = await service.setConfig(body);
+    utils.writeJson(res, returnValue);
+  } catch (error) {
+    console.error('Error', error);
+    utils.writeJson(res, { "error": error.message });
+  }
 };

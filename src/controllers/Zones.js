@@ -24,26 +24,26 @@ module.exports.getAllZones = function getAllZones (req, res, next) {
   }
 }
 
-module.exports.setZone = function setZone (req, res, next) {
+module.exports.setZone = async function setZone (req, res, next) {
   const service = container.resolve('zoneService');
   var body = req.swagger.params['body'].value;
-  service.setZone(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+  try {
+    const returnValue = await service.setZone(body);
+    utils.writeJson(res, returnValue);
+  } catch (error) {
+    console.error('Error', error);
+    utils.writeJson(res, { "error": error.message });
+  }
 };
 
-module.exports.addZone = function addZone (req, res, next) {
+module.exports.addZone = async function addZone (req, res, next) {
   const service = container.resolve('zoneService');
   var body = req.swagger.params['body'].value;
-  service.addZone(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+  try {
+    const returnValue = await addZone(body);
+    utils.writeJson(res, returnValue);
+  } catch (error) {
+    console.error('Error', error);
+    utils.writeJson(res, { "error": error.message });
+  } 
 };
