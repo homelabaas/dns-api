@@ -40,7 +40,7 @@ module.exports.addZone = async function addZone (req, res, next) {
   const service = container.resolve('zoneService');
   var body = req.swagger.params['body'].value;
   try {
-    const returnValue = await addZone(body);
+    const returnValue = await service.addZone(body);
     utils.writeJson(res, returnValue);
   } catch (error) {
     console.error('Error', error);
