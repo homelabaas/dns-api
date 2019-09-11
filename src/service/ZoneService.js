@@ -27,4 +27,10 @@ module.exports = class ConfigurationService {
     await this.bindConfigurationManager.reconfigureBind();
     return { 'message': "Zone set OK."};
   }
+
+  async deleteZone(zoneId) {
+    await this.repository.deleteZone(zoneId);
+    await this.bindConfigurationManager.reconfigureBind();
+    return { 'message': "Zone deleted OK."};
+  }
 }

@@ -83,7 +83,7 @@ paths:
             $ref: "#/definitions/Zone"
       responses:
         "200":
-          description: OK message
+          description: "OK message"
           schema:
             $ref: "#/definitions/GeneralResponse"
       x-swagger-router-controller: "Zones"
@@ -102,6 +102,23 @@ paths:
           description: "A single zone"
           schema:
             $ref: "#/definitions/Zone"
+        "404":
+          description: "Zone not found"
+      x-swagger-router-controller: "Zones"
+    delete:
+      summary: "Delete a single zone"
+      operationId: "deleteZoneById"
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the zone to delete"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "OK message"
+          schema:
+            $ref: "#/definitions/GeneralResponse"
         "404":
           description: "Zone not found"
       x-swagger-router-controller: "Zones"
@@ -141,6 +158,26 @@ paths:
       responses:
         "200":
           description: "Successfully added record"
+      x-swagger-router-controller: "Records"
+  /zones/{id}/records/delete:
+    post:
+      summary: "Delete a record from a zone"
+      operationId: "deleteRecordForZoneId"
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the zone to delete the record from"
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: "Record to delete"
+          required: true
+          schema:
+            $ref: "#/definitions/Record"
+      responses:
+        "200":
+          description: "Successfully deleted record"
       x-swagger-router-controller: "Records"
 definitions:
   Configuration:

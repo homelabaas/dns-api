@@ -13,6 +13,18 @@ module.exports.getZoneById = function getZoneById (req, res, next) {
   }
 }
 
+module.exports.deleteZoneById = async function deleteZoneById (req, res, next) {
+  const service = container.resolve('zoneService');
+  var zoneId = req.swagger.params['id'].value;
+  try {
+    const returnValue = await service.deleteZone(zoneId);
+    utils.writeJson(res, returnValue);
+  } catch (error) {
+    console.error('Error', error);
+    utils.writeJson(res, { "error": error.message });
+  }
+}
+
 module.exports.getAllZones = function getAllZones (req, res, next) {
   const service = container.resolve('zoneService');
   try {

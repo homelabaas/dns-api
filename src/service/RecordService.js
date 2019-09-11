@@ -14,17 +14,11 @@ module.exports = class RecordService {
     await this.bindConfigurationManager.reconfigureBind();
     return { 'message': "Record added OK."};
   }
-  // async addZone(zone) {
-  //   const addZone = new Zone(zone.name, zone.TTL, zone.adminEmail, zone.nsaddress);
-  //   await this.repository.addZone(zone.name, addZone);
-  //   await this.bindConfigurationManager.reconfigureBind();
-  //   return { 'message': "Zone added OK."};
-  // }
 
-  // async setZone(zone) {
-  //   const setZone = new Zone(zone.name, zone.TTL, zone.adminEmail);
-  //   await this.repository.setZone(zone.name, setZone);
-  //   await this.bindConfigurationManager.reconfigureBind();
-  //   return { 'message': "Zone set OK."};
-  // }
+  async deleteRecordForZoneId(zoneId, record) {
+    this.repository.deleteRecord(zoneId, record);
+    await this.bindConfigurationManager.reconfigureBind();
+    return { 'message': "Record deleted OK."};
+  }
+
 }

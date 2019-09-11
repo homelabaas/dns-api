@@ -47,6 +47,14 @@ module.exports = class FileBasedRepository {
     await this.save();
   }
 
+  async deleteZone(zoneId) {
+    if (!this._data.zones.hasOwnProperty(zoneId)) {
+      throw new Error("Zone " + zoneId + " does not exist.");
+    }
+    delete(this._data.zones[zoneId]);
+    await this.save();
+  }
+
   async setZone(zoneId, zoneToSet) {
     if (this._data.zones.hasOwnProperty(zoneId)) {
       this._data.zones[zoneId].name = zoneToSet.name;
@@ -84,6 +92,19 @@ module.exports = class FileBasedRepository {
     }
   }
 
+  async deleteRecord(zoneId, record) {
+    if (!this._data.zones.hasOwnProperty(zoneId)) {
+      throw new Error("Zone " + zoneName + " does not exist.");
+    }
+    const zone = this._data.zones[zoneId];
+    const records = zone.records.filter(p => p.fqdn === record.fqdn);
+    if (records.length !== 0) {
+      //this._data.zones[zoneId].records.push(record);
+      await this.save();
+    } else {
+      throw new Error("Record " + record.fqdn + " doesn't exist.");
+    }
+  }
   removeRecordByFqdn(zoneId, fqdn) {
     if (!this._data.zones[zoneId]) {
       throw new Error("Zone not found.");

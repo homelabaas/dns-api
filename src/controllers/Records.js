@@ -25,3 +25,16 @@ module.exports.addRecordForZoneId = async function addRecordForZoneId (req, res,
     utils.writeJson(res, { "error": error.message });
   }
 }
+
+module.exports.deleteRecordForZoneId = async function deleteRecordForZoneId (req, res, next) {
+  const service = container.resolve('recordService');
+  var zoneId = req.swagger.params['id'].value;
+  var body = req.swagger.params['body'].value;
+  try {
+    const returnValue = await service.deleteRecordForZoneId(zoneId, body);
+    utils.writeJson(res, returnValue);
+  } catch (error) {
+    console.error('Error', error);
+    utils.writeJson(res, { "error": error.message });
+  }
+}
