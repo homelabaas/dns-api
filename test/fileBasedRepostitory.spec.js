@@ -139,7 +139,7 @@ describe('FileBasedRepository', async function() {
           adminEmail: 'admin.test.com.'
         });
         await repository.addRecord('test.com', {
-          fqdn: 'test.test.com',
+          name: 'test.test.com',
           type: 'A',
           address: '10.0.0.1'
         });
@@ -163,16 +163,16 @@ describe('FileBasedRepository', async function() {
           adminEmail: 'admin.test.com.'
         });
         await repository.addRecord('test.com', {
-          fqdn: 'test.test.com',
+          name: 'test.test.com',
           type: 'A',
           address: '10.0.0.1'
         });
         await repository.addRecord('test.com', {
-          fqdn: 'testblah.test.com',
+          name: 'testblah.test.com',
           type: 'A',
           address: '10.0.0.2'
         });
-        await repository.removeRecordByFqdn('test.com','testblah.test.com');
+        await repository.removeRecordByName('test.com','testblah.test.com');
         const allData = repository.getFullConfig();
         expect(allData.zones['test.com'].records).to.be.of.length(1);
       });

@@ -24,12 +24,12 @@ const testDataModel = {
           adminEmail: 'admin.test.com.',
           records: [
               {
-                  fqdn: 'test',
+                name: 'test',
                   type: 'A',
                   address: '192.168.0.1'
               },
               {
-                fqdn: 'ns',
+                name: 'ns',
                 type: 'A',
                 address: '192.168.0.1'
               }
@@ -45,12 +45,12 @@ const testDataModel = {
           adminEmail: 'admin.test2.com.',
           records: [
               {
-                  fqdn: 'test',
-                  type: 'A',
-                  address: '192.168.0.2'
+                name: 'test',
+                type: 'A',
+                address: '192.168.0.2'
               },
               {
-                fqdn: 'ns',
+                name: 'ns',
                 type: 'A',
                 address: '192.168.0.1'
               }

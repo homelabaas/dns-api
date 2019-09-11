@@ -9,7 +9,7 @@ module.exports = class Zone {
     if (nsaddress) {
       this.records = [
         {
-          fqdn: 'ns',
+          name: 'ns',
           type: 'A',
           address: nsaddress
         }

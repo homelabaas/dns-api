@@ -10,13 +10,13 @@ module.exports = class RecordService {
   }
 
   async addRecordForZoneId(zoneId, record) {
-    this.repository.addRecord(zoneId, record);
+    await this.repository.addRecord(zoneId, record);
     await this.bindConfigurationManager.reconfigureBind();
     return { 'message': "Record added OK."};
   }
 
   async deleteRecordForZoneId(zoneId, record) {
-    this.repository.deleteRecord(zoneId, record);
+    await this.repository.deleteRecord(zoneId, record);
     await this.bindConfigurationManager.reconfigureBind();
     return { 'message': "Record deleted OK."};
   }

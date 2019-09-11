@@ -80,37 +80,40 @@ module.exports = class FileBasedRepository {
 
   async addRecord(zoneId, record) {
     if (!this._data.zones.hasOwnProperty(zoneId)) {
-      throw new Error("Zone " + zoneName + " does not exist.");
+      throw new Error("Zone " + zoneId + " does not exist.");
     }
     const zone = this._data.zones[zoneId];
-    const records = zone.records.filter(p => p.fqdn === record.fqdn);
-    if (records.length === 0) {
-      this._data.zones[zoneId].records.push(record);
+    const recordIndex = zone.records.findIndex(p => p.name === record.name &&
+      p.type === record.type && p.address === record.address);
+    if (recordIndex === -1) {
+      zone.records.push(record);
       await this.save();
     } else {
-      throw new Error("Record " + record.fqdn + " already exists.");
+      throw new Error("Record " + record.name + " already exists.");
     }
   }
 
   async deleteRecord(zoneId, record) {
     if (!this._data.zones.hasOwnProperty(zoneId)) {
-      throw new Error("Zone " + zoneName + " does not exist.");
+      throw new Error("Zone " + zoneId + " does not exist.");
     }
     const zone = this._data.zones[zoneId];
-    const records = zone.records.filter(p => p.fqdn === record.fqdn);
-    if (records.length !== 0) {
-      //this._data.zones[zoneId].records.push(record);
+    const recordIndex = zone.records.findIndex(p => p.name === record.name &&
+      p.type === record.type && p.address === record.address);
+    if (recordIndex >= 0) {
+      zone.records.splice(recordIndex, 1);
       await this.save();
     } else {
-      throw new Error("Record " + record.fqdn + " doesn't exist.");
+      throw new Error("Record " + JSON.stringify(record) + " doesn't exist.");
     }
   }
-  removeRecordByFqdn(zoneId, fqdn) {
+
+  removeRecordByName(zoneId, name) {
     if (!this._data.zones[zoneId]) {
       throw new Error("Zone not found.");
     }
     const zone = this._data.zones[zoneId];
-    const records = zone.records.filter(p => p.fqdn === fqdn);
+    const records = zone.records.filter(p => p.name === name);
     if (records.length === 1) {
       const record = records[0];
       for (let i = 0; i < zone.records.length; i++) {
@@ -119,7 +122,7 @@ module.exports = class FileBasedRepository {
         }
       }
     } else {
-      throw new Error("Record not found by fqdn: " + fqdn);
+      throw new Error("Record not found by name: " + name);
     }
   }
 
@@ -181,8 +184,8 @@ module.exports = class FileBasedRepository {
     return this._data.zones[zoneId].records;
   }
 
-  getZoneRecord(zoneId, fqdn) {
-    return this._data.zones[zoneId].records.find(p => p.fqdn === fqdn);
+  getZoneRecord(zoneId, name) {
+    return this._data.zones[zoneId].records.find(p => p.name === name);
   }
 
   getConfig() {
