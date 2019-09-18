@@ -22,17 +22,15 @@ module.exports = class FileBasedRepository {
       console.log('Data file ' + this.filename + ' not found.');
       console.log('Initialising new DNS data.');
       this._data = {
-        dns1: '192.168.0.1',
-        dns2: '192.168.0.2',
+        dnsforwarders: ['192.168.0.1'],
         zones: {}
       };
       await this.save();
     }
   }
 
-  async setConfig(config) {
-    this._data.dns1 = config.dns1;
-    this._data.dns2 = config.dns2;
+  async setConfig(forwarders) {
+    this._data.dnsforwarders = forwarders;
     await this.save();
   }
 
@@ -190,8 +188,7 @@ module.exports = class FileBasedRepository {
 
   getConfig() {
     return {
-      dns1: this._data.dns1,
-      dns2: this._data.dns2
+      dnsforwarders: this._data.dnsforwarders
     }
   }
 }

@@ -23,13 +23,9 @@ describe('FileBasedRepository', async function() {
       const config = require('config');
       const repository = new FileBasedRepository({ fileRespositoryFilePath: tempMainFile });
       await repository.initialise();
-      await repository.setConfig({
-        dns1: '10.0.0.0',
-        dns2: '10.0.0.1'
-      });
+      await repository.setConfig([ '10.0.0.0', '10.0.0.1']);
       const allData = repository.getFullConfig();
-      expect(allData.dns1).to.equal('10.0.0.0');
-      expect(allData.dns2).to.equal('10.0.0.1');
+      expect(allData.dnsforwarders).to.be.of.length(2);
     });
 
   });

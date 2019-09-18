@@ -18,8 +18,9 @@ options {
 	};
 
 	forwarders {
-		{{dns1}};
-		{{dns2}};
+		{{#dnsforwarders}}
+		{{.}};
+		{{/dnsforwarders}}
 	};
 
 	listen-on { any; };

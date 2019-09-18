@@ -16,7 +16,7 @@ module.exports.setConfig = async function setConfig (req, res, next) {
   const service = container.resolve('configurationService');
   var body = req.swagger.params['body'].value;
   try {
-    const returnValue = await service.setConfig(body);
+    const returnValue = await service.setConfig(body.dnsforwarders);
     utils.writeJson(res, returnValue);
   } catch (error) {
     console.error('Error', error);

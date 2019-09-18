@@ -35,13 +35,13 @@ paths:
             $ref: "#/definitions/Configuration"
       responses:
         "200":
-          description: "DNS server main configuration"
+          description: "OK message"
           schema:
-            $ref: "#/definitions/Configuration"
+            $ref: "#/definitions/GeneralResponse"
         default:
           description: unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/ErrorResponse'
       x-swagger-router-controller: "Configuration"
   /zones:
     get:
@@ -183,15 +183,15 @@ definitions:
   Configuration:
     type: "object"
     properties:
-      dns1:
-        type: "string"
-        description: "DNS Forwarder 1"
-      dns2:
-        type: "string"
-        description: "DNS Forwarder 2"
+      dnsforwarders:
+        type: "array"
+        items: 
+          type: "string"
+        description: "Array of DNS Forwarders"
     example:
-      dns1: "192.168.0.1"
-      dns2: "192.168.0.2"
+      dnsforwarders:
+        - "192.168.0.1"
+        - "192.168.0.2"
   Zone:
     type: "object"
     properties:
@@ -236,7 +236,7 @@ definitions:
       name: "test.test.localhost"
       type: "A"
       address: "127.0.0.1"
-  Error:
+  ErrorResponse:
     type: "object"
     required:
       - code

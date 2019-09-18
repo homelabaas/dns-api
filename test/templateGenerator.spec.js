@@ -11,8 +11,7 @@ const path = require('path');
 const fs = require('fs');
 
 const testDataModel = {
-  dns1: '192.168.0.1',
-  dns2: '192.168.0.2',
+  dnsforwarders: ['192.168.0.1', '192.168.0.2'],
   zones: {
     'test.com': 
       {
