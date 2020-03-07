@@ -2,7 +2,7 @@
     "Paths": {
         "MainConfigFile": "/etc/bind/named.conf",
         "ZonePath": "/etc/bind/zones",
-        "DNSRepositoryFile": "/app/repository.json"
+        "DNSRepositoryFile": "/app/data/repository.json"
     },
     "Templates": {
         "Main": "mainConfig.mustache",

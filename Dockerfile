@@ -12,5 +12,5 @@ COPY ./config ./config
 COPY ./src ./src
 
 EXPOSE 53 80
-
+VOLUME [ "/app/data" ]
 CMD ["node", "./src/server.js"]
