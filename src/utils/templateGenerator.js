@@ -20,7 +20,7 @@ class TemplateGenerator {
   };
 
   async generateConfigs(dataModel, mainConfigFilename, zonePath) {
-    console.log('Writing main config file to ' + mainConfigFilename);
+    process.stdout.write('Writing main config file to ' + mainConfigFilename + '\n');
     var copiedObject =  Object.assign({}, dataModel); 
     if (copiedObject.zones) {
       copiedObject.zones = Object.values(copiedObject.zones);
@@ -31,7 +31,7 @@ class TemplateGenerator {
       for (let i = 0; i < zones.length; i++) {
           const zone = zones[i];
           const zoneFilePath = path.join(zonePath, zone.filename);
-          console.log('Writing zone ' + zone.name + ' config file to ' + zoneFilePath);
+          process.stdout.write('Writing zone ' + zone.name + ' config file to ' + zoneFilePath + '\n');
           await fs.writeFile(zoneFilePath, this.generateZoneConfig(zone));
       }
     }

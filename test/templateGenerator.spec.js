@@ -80,7 +80,7 @@ describe('TemplateGenerator', async function() {
       it('should write out valid files to disk', async function(){
           const tempMainFile = path.join(__dirname, '..', 'temp', 'named.conf');
           const zoneFilePath = path.join(__dirname, '..', 'temp');
-          console.log('Zone path: ' + zoneFilePath)
+
           if (!fs.existsSync(zoneFilePath)) {
             fs.mkdirSync(zoneFilePath);
           }

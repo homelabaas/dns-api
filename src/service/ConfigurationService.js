@@ -5,12 +5,11 @@ module.exports = class ConfigurationService {
   }
 
   getConfig() {
-    console.log('Get config');
     return this.repository.getConfig();
   }
 
   async setConfig(config) {
-    console.log('Set config');
+    process.stdout.write('Set full config.\n');
     await this.repository.setConfig(config);
     await this.bindConfigurationManager.reconfigureBind();
     return { 'message': "DNS forwarders set OK."};

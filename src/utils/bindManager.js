@@ -25,7 +25,7 @@ exports.runBind = () => {
   });
 
   bind.on('close', (code) => {
-    console.log(`bind child process exited with code ${code}`);
+    process.stdout.write(`bind child process exited with code ${code}\n`);
   });
 }
 
@@ -107,10 +107,10 @@ exports.reloadBind = () => {
   });
 
   reload.on('close', (code) => {
-    console.log(`reload child process exited with code ${code}`);
+    process.stdout.write(`reload child process exited with code ${code}\n`);
   });
 
   reload.on('error', (error) => {
-    console.log('Error running reload. Message: ' + error.message);
+    process.stdout.write('Error running reload. Message: ' + error.message + '\n');
   })
 }

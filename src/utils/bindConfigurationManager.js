@@ -24,10 +24,10 @@ module.exports = class BindConfigurationManager{
       config.get('Paths.MainConfigFile'), config.get('Paths.ZonePath'));
 
     if (this.bindIsRunning) {
-      console.log('Reload bind configuration');
+      process.stdout.write('Reload bind configuration.\n');
       bindManager.reloadBind();
     } else {
-      console.log('Start bind process');
+      process.stdout.write('Start bind process.\n');
       bindManager.runBind();
       this.bindIsRunning = true;
     }

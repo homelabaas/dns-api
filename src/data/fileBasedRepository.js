@@ -16,11 +16,11 @@ module.exports = class FileBasedRepository {
   async initialise() {
     const dnsFileExists = await fssync.existsSync(this.filename);
     if (dnsFileExists) {
-      console.log('Loading DNS data from ' + this.filename);
+      process.stdout.write('Loading DNS data from ' + this.filename + '\n');
       await this.loadFromFile(this.filename);
     } else {
-      console.log('Data file ' + this.filename + ' not found.');
-      console.log('Initialising new DNS data.');
+      process.stdout.write('Data file ' + this.filename + ' not found.\n');
+      process.stdout.write('Initialising new DNS data.\n');
       this._data = {
         dnsforwarders: ['192.168.0.1'],
         zones: {}
@@ -139,8 +139,6 @@ module.exports = class FileBasedRepository {
   }
 
   getFullConfig() {
-    console.log('Returning data');
-    console.log(JSON.stringify(this._data));
     return this._data;
   }
 
