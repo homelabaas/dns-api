@@ -20,21 +20,30 @@ var options = {
 const spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 const swaggerDoc = jsyaml.safeLoad(spec);
 
+var startServer = function startServer(app) {
+  return new Promise((resolve,reject) => {
+    http.createServer(app).listen(port,() => {
+      resolve();
+    });
+  });
+}
+
 // Initialize the Swagger middleware
-swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
+swaggerTools.initializeMiddleware(swaggerDoc, async function (middleware) {
 
   app.use(middleware.swaggerMetadata());
   app.use(middleware.swaggerValidator());
   app.use(middleware.swaggerRouter(options));
   app.use(middleware.swaggerUi());
 
-  http.createServer(app).listen(port, async function () {
-    await container.resolve('dnsRepository').initialise();
-    await bindManager.configureRndc();
-    await bindManager.ownConfig();
-    await container.resolve('bindConfigurationManager').reconfigureBind();
-    console.log('Your server is listening on port %d (http://localhost:%d)', port, port);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', port);
-  });
+  await container.resolve('dnsRepository').initialise();
+  await bindManager.configureRndc();
+  await bindManager.ownConfig();
+  await container.resolve('bindConfigurationManager').reconfigureBind();
+
+  await startServer(app);
+
+  console.log('Your server is listening on port %d (http://localhost:%d)', port, port);
+  console.log('Swagger-ui is available on http://localhost:%d/docs', port);
 
 });

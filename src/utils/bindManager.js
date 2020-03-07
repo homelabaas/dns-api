@@ -1,15 +1,26 @@
 const { spawn } = require('child_process');
 
+const mainProcess = process;
+
 exports.runBind = () => {
 
   const bind = spawn('named', ['-c', '/etc/bind/named.conf', '-g', '-u', 'named']);
 
   bind.stdout.on('data', (data) => {
-    console.log(`bind_stdout: ${data}`);
+    process.stdout.write(`${data}`);
   });
 
   bind.stderr.on('data', (data) => {
-    console.log(`bind_stderr: ${data}`);
+    const initialString = data.toString();
+    if (initialString != '') {
+      formattedLog = initialString
+        .split('\n')
+        .filter((p) => {
+          return (p.trim() != '')
+        })
+        .map((p) => `\n[bind] ${p.trim()}`).join()
+      mainProcess.stdout.write(`${formattedLog}`);
+    }
   });
 
   bind.on('close', (code) => {
@@ -48,7 +59,7 @@ exports.configureRndc = () => {
     });
 
     rndcConfig.stderr.on('data', (data) => {
-        console.log(`rndc_stderr: ${data}`);
+        console.log(`rndc_stderr: ${data}`, {  });
     });
 
     rndcConfig.on('close', (code) => {
