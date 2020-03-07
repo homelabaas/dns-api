@@ -8,8 +8,8 @@ const logFormatter = (logdata, prefix) => {
     .filter((p) => {
       return (p.trim() != '')
     })
-    .map((p) => `\n[${prefix}] ${p.trim()}`)
-    .join();
+    .map((p) => `[${prefix}] ${p.trim()}\n`)
+    .join('');
 }
 
 exports.runBind = () => {
