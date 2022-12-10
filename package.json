@@ -21,7 +21,7 @@
     "awilix": "^4.2.2",
     "config": "^3.2.2",
     "connect": "^3.7.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "js-yaml": "^3.13.1",
     "mustache": "^3.0.1",
     "swagger-tools": "^0.10.4"
